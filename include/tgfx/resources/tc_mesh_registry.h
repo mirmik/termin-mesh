@@ -26,6 +26,7 @@ TGFX_API tc_mesh_handle tc_mesh_declare(const char* uuid, const char* name);
 TGFX_API void tc_mesh_set_load_callback(tc_mesh_handle h, tc_mesh_load_fn callback, void* user_data);
 TGFX_API bool tc_mesh_is_loaded(tc_mesh_handle h);
 TGFX_API bool tc_mesh_ensure_loaded(tc_mesh_handle h);
+TGFX_API bool tc_mesh_ensure_loaded_ptr(tc_mesh* mesh);
 TGFX_API tc_mesh* tc_mesh_get(tc_mesh_handle h);
 
 static inline const char* tc_mesh_uuid(tc_mesh_handle h) {

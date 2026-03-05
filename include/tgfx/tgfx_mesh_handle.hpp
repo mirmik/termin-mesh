@@ -152,6 +152,20 @@ public:
         return tc_mesh_ensure_loaded(handle);
     }
 
+    // GPU operations (dispatch through global callback vtable)
+    void draw_gpu() {
+        if (tc_mesh* m = get()) tc_mesh_draw_gpu(m);
+    }
+
+    uint32_t upload_gpu() {
+        tc_mesh* m = get();
+        return m ? tc_mesh_upload_gpu(m) : 0;
+    }
+
+    void delete_gpu() {
+        if (tc_mesh* m = get()) tc_mesh_delete_gpu(m);
+    }
+
     // Populate existing TcMesh with data from Mesh3
     bool set_from_mesh3(const Mesh3& mesh, const tc_vertex_layout* custom_layout = nullptr);
 

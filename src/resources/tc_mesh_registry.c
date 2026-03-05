@@ -269,6 +269,25 @@ bool tc_mesh_ensure_loaded(tc_mesh_handle h) {
     return success;
 }
 
+bool tc_mesh_ensure_loaded_ptr(tc_mesh* mesh) {
+    if (!mesh) return false;
+    if (mesh->header.is_loaded) return true;
+
+    if (!mesh->header.load_callback) {
+        tc_log(TC_LOG_WARN, "tc_mesh_ensure_loaded_ptr: mesh '%s' has no load callback", mesh->header.uuid);
+        return false;
+    }
+
+    bool success = mesh->header.load_callback(mesh, mesh->header.load_user_data);
+    if (success) {
+        mesh->header.is_loaded = 1;
+    } else {
+        tc_log(TC_LOG_ERROR, "tc_mesh_ensure_loaded_ptr: load callback failed for '%s'", mesh->header.uuid);
+    }
+
+    return success;
+}
+
 tc_mesh* tc_mesh_get(tc_mesh_handle h) {
     if (!g_initialized) return NULL;
     return (tc_mesh*)tc_pool_get(&g_mesh_pool, h);
