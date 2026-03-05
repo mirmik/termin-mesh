@@ -86,7 +86,7 @@ class CMakeBuildExt(build_ext):
         cmake_args = [
             str(source_dir),
             f"-DCMAKE_BUILD_TYPE={cfg}",
-            "-DTMESH_BUILD_PYTHON=ON",
+            "-DTERMIN_BUILD_PYTHON=ON",
             f"-DPython_EXECUTABLE={sys.executable}",
             f"-DCMAKE_INSTALL_PREFIX={staging_dir}",
             "-DCMAKE_INSTALL_LIBDIR=lib",
