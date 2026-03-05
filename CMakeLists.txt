@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+option(TMESH_BUILD_PYTHON "Build Python bindings" OFF)
 
 find_package(termin_base REQUIRED)
 
@@ -38,6 +39,10 @@ set_target_properties(termin_mesh PROPERTIES
 )
 if(NOT WIN32)
     set_target_properties(termin_mesh PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif()
+
+if(TMESH_BUILD_PYTHON)
+    add_subdirectory(python)
 endif()
 
 include(GNUInstallDirs)
