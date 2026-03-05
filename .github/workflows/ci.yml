@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout termin-mesh
+        uses: actions/checkout@v4
+
+      - name: Checkout termin-base
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/termin-base
+          token: ${{ secrets.CLONETOKEN }}
+          path: deps/termin-base
+
+      - name: Configure, build and install termin-base
+        run: |
+          cmake -S deps/termin-base -B deps/termin-base/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DTERMIN_BASE_BUILD_TESTS=ON \
+            -DTCBASE_BUILD_PYTHON=OFF \
+            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/deps/install
+          cmake --build deps/termin-base/build --parallel
+          cmake --install deps/termin-base/build
+          ctest --test-dir deps/termin-base/build --output-on-failure
+
+      - name: Configure termin-mesh
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/deps/install \
+            -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/deps/install
+
+      - name: Build termin-mesh
+        run: cmake --build build --parallel
+
+      - name: Install termin-mesh
+        run: cmake --install build
