@@ -36,7 +36,9 @@ jobs:
           cmake -S . -B build \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=/opt/termin \
-            -DCMAKE_PREFIX_PATH=/opt/termin
+            -DCMAKE_PREFIX_PATH=/opt/termin \
+            -DTERMIN_BUILD_PYTHON=ON \
+            -DPython_EXECUTABLE=$(which python3)
           cmake --build build --parallel
           sudo cmake --install build
 
