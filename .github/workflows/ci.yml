@@ -49,7 +49,10 @@ jobs:
           CMAKE_PREFIX_PATH: /opt/termin
         run: |
           pip install /opt/termin/wheels/tcbase-*.whl
-          pip wheel --no-build-isolation --no-deps -w /opt/termin/wheels .
+          mkdir -p dist
+          pip wheel --no-build-isolation --no-deps -w dist .
+          sudo mkdir -p /opt/termin/wheels
+          sudo cp dist/tmesh-*.whl /opt/termin/wheels/
 
       - name: Publish SDK artifact
         if: github.event_name == 'push'
